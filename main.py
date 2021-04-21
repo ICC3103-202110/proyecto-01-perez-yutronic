@@ -18,10 +18,11 @@ class Game:
         cls.__set_deck()
         cls.__give_hands_to_players()
         cls.__choosen_card()
-
-        Console.print_str(cls.__actual_player.hand_of_cards)
         
-
+        if cls.__actual_player.choosen_action == 'Income':
+            Console.print_str("\n *****")
+        
+        
         while len(cls.__players) < 1:
             '''''
             turno 1 
@@ -61,12 +62,13 @@ class Game:
 
     @classmethod   
     def __choosen_card(cls):
-        ##Console.clear()    #despues ponerlo
+
+        Console.clear()    
         Console.print_str_with_args('\n* Turn of player {}: *\n',[cls.__actual_player.name])
            
         if cls.__actual_player.coins >= 10:#aqui hace coup
             
-            cls.__actual_player.played_card.append('Coup')
+            cls.__actual_player.choosen_action = 'Coup'
         else:        
             actions =['Income', 'Foreign Aid']
             
@@ -87,11 +89,13 @@ class Game:
             while True:
                 action = Console.get_str_input(' * Select your action *\n')
                 if action in actions:
+                   
                     break
                 else:
                     Console.print_str('* Wrong action, please choose again * \n')
 
-            cls.__actual_player.played_card.append(action))
+            cls.__actual_player.choosen_action = str(action)
+            
         
 
 

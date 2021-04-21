@@ -35,4 +35,3 @@ class Console:
             
         str_list += ' | '.join(elements) + '\n'
         print(str_list)
-
