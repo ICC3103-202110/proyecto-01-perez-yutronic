@@ -11,4 +11,3 @@ class General_actions:
         print(player_selected, "Choose a influence to delete...")
         c = str(input())
         player_selected.cards.remove(c)
-        
