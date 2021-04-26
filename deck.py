@@ -44,8 +44,15 @@ class Deck:
                 self.deck[random].in_deck =  False
                 return self.deck[random].influence
                 break
-                    
 
+    def return_to_deck(self, influence): 
+        returned = False
+        for i in range(len(self.deck)): 
+           if returned == False and self.deck[i] == influence and self.deck[i].in_deck == False:
+               self.deck[i].in_deck = True
+               returned = True
+                    
+                    
     def __str__(self): 
         str_deck = ''
         deck_elements = [ ]
@@ -57,6 +64,7 @@ class Deck:
         str_deck += ' '.join(deck_elements) +'\n'
 
         return str_deck
+
 
     def cards_still_on_deck(self,deck):
        pass
@@ -78,17 +86,3 @@ class Deck:
 
 
 
-
-
-
-
-#def __create_grid(self):
- #       number_of_rows, number_of_cols = self.__get_rows_and_cols()
-  #      cards = self.cards.copy()
-   #     shuffle(cards)
-    #    grid = []
-     ##   for row in range(number_of_rows):
-       #     grid.append([])
-         #       grid[row].append(cards.pop())
-        #    for col in range(number_of_cols):
-       # return grid

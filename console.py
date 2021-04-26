@@ -1,4 +1,5 @@
 import os
+import time
 
 class Console:
 
@@ -24,6 +25,7 @@ class Console:
       
     @staticmethod
     def clear():
+        time.sleep(2)
         os.system('cls||clear')
 
     @staticmethod
@@ -35,3 +37,12 @@ class Console:
             
         str_list += ' | '.join(elements) + '\n'
         print(str_list)
+
+    def show_table(table):
+        Console.print_str_with_args("Table: \n {} \n", [table])
+        time.sleep(2)
+        os.system('cls||clear')
+
+    @classmethod
+    def show_winner(player):
+        Console.print_str_with_args(" \n The WINNER is {} \n", [player])
