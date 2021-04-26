@@ -38,11 +38,13 @@ class Console:
         str_list += ' | '.join(elements) + '\n'
         print(str_list)
 
+    @staticmethod
     def show_table(table):
-        Console.print_str_with_args("Table: \n {} \n", [table])
+        Console.print_str("Table: \n")
+        Console.print_list(table)
         time.sleep(2)
         os.system('cls||clear')
 
-    @classmethod
+    @staticmethod
     def show_winner(player):
-        Console.print_str_with_args(" \n The WINNER is {} \n", [player])
+        Console.print_str_with_args(" \n The WINNER is {}! \n",[player])

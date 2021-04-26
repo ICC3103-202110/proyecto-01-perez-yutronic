@@ -41,7 +41,7 @@ class Game:
             cls.__clean_choseen_actions()
             cls.__check_actual_player()
 
-        Console.show_winner(cls.__palyers[0])
+        Console.show_winner(cls.__players[0].name)
 
     ### Setting Funtions
     @classmethod
@@ -177,14 +177,19 @@ class Game:
 
             if player_challenged.choosen_action == 'Tax':
                 cls.__deck.return_to_deck('Duke')
+                player_challenged.hand_of_cards.remove('Duke')
             elif player_challenged.choosen_action == 'Exchange':
                 cls.__deck.return_to_deck('Ambassador')
+                player_challenged.hand_of_cards.remove('Ambassador')
             elif player_challenged.choosen_action == 'Steal':
                 cls.__deck.return_to_deck('Captain')
+                player_challenged.hand_of_cards.remove('Captain')
             elif player_challenged.choosen_action == 'Assassinate':
                 cls.__deck.return_to_deck('Assassin')
+                player_challenged.hand_of_cards.remove('Assassin')
             elif player_challenged.choosen_action == 'Block-Assasinate':
                 cls.__deck.return_to_deck('Contessa')
+                player_challenged.hand_of_cards.remove('Contessa')
 
             player_challenged.hand_of_cards.append(
                 cls.__deck.pick_card_and_remove())
@@ -203,7 +208,7 @@ class Game:
             if len(challenger_cards) == 2:
                 while True:
                     discard = Console.get_str_input_with_args(
-                        ' * {}:Select the card that do you want to discard *\n',[challenger.name])
+                        ' * {}: Select the card that do you want to discard *\n',[challenger.name])
                     if discard in challenger_cards:
                         break
                     else:
@@ -331,8 +336,9 @@ class Game:
             elif cls.__actual_player.choosen_action == 'Exchange':  ### EXCHANGE
                 cls.__Ambassador_act(cls.__actual_player, cls.__deck)
                 Console.print_str_with_args(
-                    '\n*{} hand of card: {}  *\n',
-                    [cls.__actual_player, cls.__actual_player.hand_of_cards])
+                    '\n*{} hand of card:  *\n',
+                    [cls.__actual_player])
+                Console.print_list(cls.__actual_player.hand_of_cards)
 
             elif cls.__actual_player.choosen_action == 'Steal':  ## STEAL
                 Target_number = cls.__choosen_player_to_attack()
@@ -394,8 +400,7 @@ class Game:
                                     )
                             break
                         elif answer == 'No':
-                          break
-
+                            break
                     else:
                         Console.print_str('\n * You answer isn´t valid * \n')
         return counteratackking
@@ -407,33 +412,33 @@ class Game:
             if cls.__players[i] != cls.__actual_player:
                 targets.append(cls.__players[i].name)
 
-        Console.print_str('* SELECT YOUR TARGET * \n\n')
-        Console.print_list(targets)
-        while True:       
+        while True:   
+            Console.print_str('* SELECT YOUR TARGET * \n\n')
+            Console.print_list(targets)    
             target = Console.get_str_input('')
             if target in targets:
                 break
             else:
-                Console.print_str("Wrong name, try again.")
+                Console.print_str("Wrong name, try again.\n")
 
         Console.print_str_with_args('\n* You selected {} *\n', [target])
 
-        for number in range(len(cls.__players)):
-            if cls.__players[i].name == target:
-                return number
+        for player_number in range(len(cls.__players)):
+            if cls.__players[player_number].name == target:
+                return player_number
 
     ### Ending Phase Funtions
     @classmethod
     def __check_actual_player(cls):
         NUMBER = 0
+        Elimination_list = []
         for i in range(cls.NUMBER_OF_PLAYERS):
             if len(cls.__players[i].hand_of_cards) == 0:
                 Console.clear()
                 Console.print_str_with_args("{}, has been eliminated",[cls.__players[i]])
-                cls.NUMBER_OF_PLAYERS -=1
-                Console.clear()
-                cls.__players.remove(cls.__players[i])
-
+                Elimination_list.append(i)
+                Console.clear()  
+                
             if cls.__players[i].number == cls.__actual_player.number:
                 NUMBER = i
 
@@ -441,6 +446,11 @@ class Game:
             cls.__actual_player = cls.__players[0]
         else:
             cls.__actual_player = cls.__players[NUMBER + 1]
+
+        if len(Elimination_list) > 0:
+            for number in Elimination_list:
+                cls.__players.remove(cls.__players[number])
+                cls.NUMBER_OF_PLAYERS -= 1
 
     @classmethod
     def __clean_choseen_actions(cls):
@@ -465,7 +475,7 @@ class Game:
 
         while True:
             discard1 = Console.get_str_input(
-                ' * Select the first card that do you want to discard *\n')
+                '\n * Select the first card that do you want to discard *\n')
             if discard1 in cards:
                 break
             else:
@@ -477,7 +487,7 @@ class Game:
 
         while True:
             discard2 = Console.get_str_input(
-                ' * Select the second card that do you want to discard *\n')
+                '\n * Select the second card that do you want to discard *\n')
             if discard2 in cards:
                 break
             else:
@@ -490,8 +500,6 @@ class Game:
 
         for i in range(len(cards)):
             player.hand_of_cards.append(cards[i])
-
-        Console.print_str(str(player.hand_of_cards))
 
     @classmethod
     def __Assassin_act(cls, player, target, deck):
